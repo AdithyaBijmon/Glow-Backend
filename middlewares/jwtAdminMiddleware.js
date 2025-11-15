@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-const jwt = (req, res, next) => {
+const adminJwtMiddleware = (req, res, next) => {
     console.log("Inside jwt middleware");
 
     const token = req.headers.authorization.split(" ")[1]
@@ -11,6 +11,9 @@ const jwt = (req, res, next) => {
         if (jwtResponse.role == "admin") {
             next()
         }
+        else{
+            res.status(401).json("Unauthorised User")
+        }
        
 
 
@@ -19,3 +22,5 @@ const jwt = (req, res, next) => {
         res.status(500).json("Invalid token", err)
     }
 }
+
+module.exports = adminJwtMiddleware

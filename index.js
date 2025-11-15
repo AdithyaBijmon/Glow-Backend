@@ -12,6 +12,7 @@ glowServer.use(cors())
 glowServer.use(express.json())
 
 glowServer.use(router)
+glowServer.use('/uploads',express.static('./uploads'))
 
 const PORT = 3000
 
