@@ -6,7 +6,7 @@ exports.addService = async (req, res) => {
     const { serviceName, description, category, price } = req.body
     const serviceImg = req.file.filename
     // console.log(req.file)
-    
+
 
     try {
         const ExistingService = await services.findOne({ serviceName })
@@ -19,8 +19,9 @@ exports.addService = async (req, res) => {
                 serviceName, description, category, price, serviceImg
             })
             await newService.save()
+            res.status(200).json(newService)
 
-        } 
+        }
     }
     catch (err) {
         res.status(500).json(err)
@@ -28,14 +29,28 @@ exports.addService = async (req, res) => {
 
 }
 
-exports.getServices = async(req,res)=>{
+exports.getServices = async (req, res) => {
     console.log("Inside get services")
 
-    try{
+    try {
         const allServices = await services.find()
         res.status(200).json(allServices)
     }
-    catch(err){
+    catch (err) {
+        res.status(500).json(err)
+    }
+}
+
+exports.removeService = async (req, res) => {
+    console.log("Inside remove Service")
+    const { id } = req.params
+    try {
+
+        const removeServiceDetails = await services.findByIdAndDelete({ _id: id })
+        res.status(200).json(removeServiceDetails)
+
+    }
+    catch (err) {
         res.status(500).json(err)
     }
 }
