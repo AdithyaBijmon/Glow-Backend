@@ -24,3 +24,17 @@ exports.addJob = async (req,res) =>{
         res.status(500).json(err)
     }
 }
+
+exports.getAllJobs = async(req,res)=>{
+    console.log("Iniside get All Jobs")
+
+    try{
+
+        const allJobs = await jobs.find()
+        res.status(200).json(allJobs)
+
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
+}
