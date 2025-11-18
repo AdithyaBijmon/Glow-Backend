@@ -4,6 +4,7 @@ exports.addJob = async (req,res) =>{
     console.log("Inside add job")
 
     const {jobTitle,jobDescription,jobType,salary,experience,qualification,eligibility} = req.body
+    
 
     try {
 
@@ -35,6 +36,20 @@ exports.getAllJobs = async(req,res)=>{
 
     }
     catch(err){
+        res.status(500).json(err)
+    }
+}
+
+exports.removeJob = async (req, res) => {
+    console.log("Inside remove Job")
+    const { id } = req.params
+    try {
+
+        const removeJobDetails = await jobs.findByIdAndDelete({ _id: id })
+        res.status(200).json(removeJobDetails)
+
+    }
+    catch (err) {
         res.status(500).json(err)
     }
 }
