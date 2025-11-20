@@ -41,6 +41,19 @@ exports.getServices = async (req, res) => {
     }
 }
 
+exports.getHomeServices = async (req,res)=>{
+    console.log("Inside get home Services")
+    try{
+
+        const getHomeServicesList = await services.find().sort({_id:-1}).limit(4)
+        res.status(200).json(getHomeServicesList)
+
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
+}
+
 exports.removeService = async (req, res) => {
     console.log("Inside remove Service")
     const { id } = req.params
