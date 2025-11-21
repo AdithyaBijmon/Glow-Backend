@@ -40,6 +40,25 @@ exports.getAllJobs = async(req,res)=>{
     }
 }
 
+exports.getAllUserJobs = async (req,res)=>{
+    console.log("Iniside get All user Jobs")
+    const searchKey = req.query.search
+
+    const query = {
+        jobTitle:{$regex:searchKey, $options:'i'}
+    }
+
+    try{
+
+        const allUserJobs = await jobs.find(query)
+        res.status(200).json(allUserJobs)
+
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
+}
+
 exports.removeJob = async (req, res) => {
     console.log("Inside remove Job")
     const { id } = req.params

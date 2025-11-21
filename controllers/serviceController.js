@@ -31,9 +31,14 @@ exports.addService = async (req, res) => {
 
 exports.getServices = async (req, res) => {
     console.log("Inside get services")
+    const searchKey = req.query.search
+
+    const query = {
+        serviceName:{$regex:searchKey,$options:'i'}
+    }
 
     try {
-        const allServices = await services.find()
+        const allServices = await services.find(query)
         res.status(200).json(allServices)
     }
     catch (err) {
