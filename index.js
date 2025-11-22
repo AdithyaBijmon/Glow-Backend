@@ -13,6 +13,7 @@ glowServer.use(express.json())
 
 glowServer.use(router)
 glowServer.use('/uploads',express.static('./uploads'))
+glowServer.use('/pdf',express.static('./pdf'))
 
 const PORT = 3000
 

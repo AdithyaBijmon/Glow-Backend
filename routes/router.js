@@ -1,21 +1,26 @@
 const express = require('express')
-const { registerController, loginController, editUserController, editAdminController } = require('../controllers/userController')
+const { registerController, loginController, editUserController, editAdminController, googleLoginController } = require('../controllers/userController')
 const multerConfig = require('../middlewares/serviceImageUpload')
 const { addService, getServices, removeService, getHomeServices } = require('../controllers/serviceController')
 const adminJwtMiddleware = require('../middlewares/jwtAdminMiddleware')
 
 const { addJob, getAllJobs, removeJob, getAllUserJobs } = require('../controllers/jobController')
 const jwtMiddleware = require('../middlewares/jwtMiddleware')
+const { addApplication } = require('../controllers/applicationController')
+const pdfMulterConfig = require('../middlewares/applicationPdfUpload')
 
 const router = express.Router()
  
 
 router.post('/register',registerController)
 router.post('/login',loginController)
+router.post('/google-login',googleLoginController)
+
 
 // ----------user--------------
 router.get('/home-services',getHomeServices)
 router.get('/all/user/jobs',jwtMiddleware,getAllUserJobs)
+router.post('/add-application',jwtMiddleware,pdfMulterConfig.single('resume'),addApplication)
 // ----------admin---------------
 router.post('/add-service',adminJwtMiddleware,multerConfig.single('serviceImg'),addService)
 router.get('/all-services',getServices)

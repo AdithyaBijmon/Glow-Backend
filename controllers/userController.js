@@ -32,13 +32,13 @@ exports.loginController = async (req, res) => {
 
     const { email, password } = req.body
 
-     try {
+    try {
         const existingUser = await users.findOne({ email })
 
         if (existingUser) {
             if (existingUser.password == password) {
                 // token
-                const token = jwt.sign({ userMail: existingUser.email,role:existingUser.role }, process.env.JWTSECRET)
+                const token = jwt.sign({ userMail: existingUser.email, role: existingUser.role }, process.env.JWTSECRET)
                 res.status(200).json({ user: existingUser, token })
             }
             else {
@@ -56,23 +56,57 @@ exports.loginController = async (req, res) => {
     }
 }
 
-exports.editAdminController = async(req,res)=>{
+exports.googleLoginController = async (req, res) => {
+    console.log("Inside google login controller")
+
+    const { username, email, password, profile } = req.body
+
+    try {
+        const existingUser = await users.findOne({ email })
+
+        if (existingUser) {
+
+            // token
+            const token = jwt.sign({ userMail: existingUser.email, role: existingUser.role }, process.env.JWTSECRET)
+            res.status(200).json({ user: existingUser, token })
+        }
+
+        else {
+            const newUser = new users({
+                username, email, password, profile
+            })
+            await newUser.save()
+
+            const token = jwt.sign({userMail:newUser.email},process.env.JWTSECRET)
+            res.status(200).json({user:newUser,token})
+        }
+
+
+
+    }
+    catch (err) {
+        res.status(500).json(err)
+    }
+}
+
+
+exports.editAdminController = async (req, res) => {
     console.log("Inside edit Admin Controller");
 
-    const {username,password,profile,role} = req.body
+    const { username, password, profile, role } = req.body
     const email = req.payload
-    const uploadImage = req.file?req.file.filename:profile
-    
+    const uploadImage = req.file ? req.file.filename : profile
 
-    try{
 
-        const editUserDetails = await users.findOneAndUpdate({email},{username,password,profile:uploadImage,role},{new:true})
+    try {
+
+        const editUserDetails = await users.findOneAndUpdate({ email }, { username, password, profile: uploadImage, role }, { new: true })
         res.status(200).json(editUserDetails)
 
     }
-    catch(err){
+    catch (err) {
         res.status(500).json(err)
     }
-    
+
 }
 
