@@ -6,7 +6,7 @@ const adminJwtMiddleware = require('../middlewares/jwtAdminMiddleware')
 
 const { addJob, getAllJobs, removeJob, getAllUserJobs } = require('../controllers/jobController')
 const jwtMiddleware = require('../middlewares/jwtMiddleware')
-const { addApplication } = require('../controllers/applicationController')
+const { addApplication, getAllApplication, getAllApplications } = require('../controllers/applicationController')
 const pdfMulterConfig = require('../middlewares/applicationPdfUpload')
 
 const router = express.Router()
@@ -29,6 +29,7 @@ router.post('/add-job',adminJwtMiddleware,addJob)
 router.get('/all-jobs',adminJwtMiddleware,getAllJobs)
 router.delete('/remove/:id/job',adminJwtMiddleware,removeJob)
 router.put('/edit/admin',adminJwtMiddleware,multerConfig.single('profile'),editAdminController)
+router.get('/all-applications',adminJwtMiddleware,getAllApplications)
 
 
 

@@ -28,6 +28,11 @@ const applicationSchema = new mongoose.Schema({
     jobId:{
         type:String,
         required:true
+    },
+    status:{
+        type:String,
+        required:true,
+        default:"pending"
     }
 })
 
