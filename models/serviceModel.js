@@ -20,6 +20,10 @@ const serviceSchema = new mongoose.Schema({
     serviceImg:{
         type:String,
         required:true
+    },
+    duration:{
+        type:String,
+        required:true
     }
 })
 

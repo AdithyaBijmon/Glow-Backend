@@ -40,3 +40,33 @@ exports.getAllApplications = async (req, res) => {
         res.status(500).json(err)
     }
 }
+
+exports.adminApproveApplication = async (req, res) => {
+    console.log("Iniside approve Application")
+    const {id} = req.params
+
+    try {
+        const approveApplication = await applications.findByIdAndUpdate({ _id: id },{status: "approved"}, { new: true })
+
+        res.status(200).json(approveApplication)
+    }
+    catch (err) {
+        res.status(500).json(err)
+    }
+
+}
+
+exports.adminRejectApplication = async (req, res) => {
+    console.log("Iniside reject Application")
+    const {id} = req.params
+
+    try {
+        const rejectApplication = await applications.findByIdAndUpdate({ _id: id },{status: "rejected"}, { new: true })
+
+        res.status(200).json(rejectApplication)
+    }
+    catch (err) {
+        res.status(500).json(err)
+    }
+
+}

@@ -3,7 +3,7 @@ const services = require("../models/serviceModel")
 exports.addService = async (req, res) => {
     console.log("Inside add service")
 
-    const { serviceName, description, category, price } = req.body
+    const { serviceName, description, category, price,duration } = req.body
     const serviceImg = req.file.filename
     // console.log(req.file)
 
@@ -16,7 +16,7 @@ exports.addService = async (req, res) => {
         }
         else {
             const newService = new services({
-                serviceName, description, category, price, serviceImg
+                serviceName, description, category, price, serviceImg,duration
             })
             await newService.save()
             res.status(200).json(newService)
@@ -44,6 +44,32 @@ exports.getServices = async (req, res) => {
     catch (err) {
         res.status(500).json(err)
     }
+}
+
+exports.getAdminAllServices = async (req, res) => {
+    console.log("Inside get services")
+
+    try {
+        const allServices = await services.find()
+        res.status(200).json(allServices)
+    }
+    catch (err) {
+        res.status(500).json(err)
+    }
+}
+
+exports.viewSingleService = async (req,res)=>{
+    console.log("Inside view Single Service");
+    const {id} = req.params
+
+    try {
+        const viewService = await services.findById({_id:id})
+        res.status(200).json(viewService)
+        
+    } catch (error) {
+        res.status(500).json(error)
+    }
+    
 }
 
 exports.getHomeServices = async (req,res)=>{
