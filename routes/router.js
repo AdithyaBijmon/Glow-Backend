@@ -8,6 +8,7 @@ const { addJob, getAllJobs, removeJob, getAllUserJobs } = require('../controller
 const jwtMiddleware = require('../middlewares/jwtMiddleware')
 const { addApplication, getAllApplication, getAllApplications, adminApproveApplication, adminRejectApplication } = require('../controllers/applicationController')
 const pdfMulterConfig = require('../middlewares/applicationPdfUpload')
+const { addAppointment, getAllAppointments, approveAppointment, rejectAppointment, viewUserAppointments, removeAppointment } = require('../controllers/appointmentController')
 
 const router = express.Router()
  
@@ -23,6 +24,10 @@ router.get('/all/user/jobs',jwtMiddleware,getAllUserJobs)
 router.get('/all-services',getServices)
 router.post('/add-application',jwtMiddleware,pdfMulterConfig.single('resume'),addApplication)
 router.get('/view/:id/service',jwtMiddleware,viewSingleService)
+router.post('/add-appointment',jwtMiddleware,addAppointment)
+router.get('/view/user/appointments',jwtMiddleware,viewUserAppointments)
+router.delete('/remove/:id/appointment',jwtMiddleware,removeAppointment)
+router.put('/edit/user',jwtMiddleware,multerConfig.single('profile'),editUserController)
 // ----------admin---------------
 router.post('/add-service',adminJwtMiddleware,multerConfig.single('serviceImg'),addService)
 router.get('/admin-all-services',getAdminAllServices)
@@ -34,7 +39,9 @@ router.put('/edit/admin',adminJwtMiddleware,multerConfig.single('profile'),editA
 router.get('/all-applications',adminJwtMiddleware,getAllApplications)
 router.put('/approve/:id/application',adminJwtMiddleware,adminApproveApplication)
 router.put('/reject/:id/application',adminJwtMiddleware,adminRejectApplication)
-
+router.get('/all-appointments',adminJwtMiddleware,getAllAppointments)
+router.put('/approve/:id/appointment',adminJwtMiddleware,approveAppointment)
+router.put('/reject/:id/appointment',adminJwtMiddleware,rejectAppointment)
 
 
 module.exports = router;

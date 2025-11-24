@@ -110,3 +110,25 @@ exports.editAdminController = async (req, res) => {
 
 }
 
+exports.editUserController = async (req, res) => {
+    console.log("Inside edit User Controller");
+
+    const { username, password, profile } = req.body
+    const email = req.payload
+    const uploadImage = req.file ? req.file.filename : profile
+
+
+    try {
+
+        const editUserDetails = await users.findOneAndUpdate({ email }, { username, password, profile: uploadImage }, { new: true })
+        res.status(200).json(editUserDetails)
+
+    }
+    catch (err) {
+        res.status(500).json(err)
+    }
+
+}
+
+
+
