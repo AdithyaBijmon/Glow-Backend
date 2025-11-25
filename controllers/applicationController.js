@@ -41,12 +41,40 @@ exports.getAllApplications = async (req, res) => {
     }
 }
 
-exports.adminApproveApplication = async (req, res) => {
-    console.log("Iniside approve Application")
-    const {id} = req.params
+exports.getAllUserJobs = async (req, res) => {
+    console.log("Iniside get All user Jobs")
+    const email = req.payload
 
     try {
-        const approveApplication = await applications.findByIdAndUpdate({ _id: id },{status: "approved"}, { new: true })
+
+        const allUserJobs = await applications.find({ email })
+        res.status(200).json(allUserJobs)
+
+    }
+    catch (err) {
+        res.status(500).json(err)
+    }
+}
+
+exports.removeApplication = async (req, res) => {
+    console.log("Inside remove application");
+    const { id } = req.params
+
+    try {
+        const removeApplication = await applications.findByIdAndDelete({ _id: id })
+        res.status(200).json(removeApplication)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+
+}
+
+exports.adminApproveApplication = async (req, res) => {
+    console.log("Iniside approve Application")
+    const { id } = req.params
+
+    try {
+        const approveApplication = await applications.findByIdAndUpdate({ _id: id }, { status: "approved" }, { new: true })
 
         res.status(200).json(approveApplication)
     }
@@ -58,10 +86,10 @@ exports.adminApproveApplication = async (req, res) => {
 
 exports.adminRejectApplication = async (req, res) => {
     console.log("Iniside reject Application")
-    const {id} = req.params
+    const { id } = req.params
 
     try {
-        const rejectApplication = await applications.findByIdAndUpdate({ _id: id },{status: "rejected"}, { new: true })
+        const rejectApplication = await applications.findByIdAndUpdate({ _id: id }, { status: "rejected" }, { new: true })
 
         res.status(200).json(rejectApplication)
     }

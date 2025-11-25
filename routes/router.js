@@ -4,9 +4,9 @@ const multerConfig = require('../middlewares/serviceImageUpload')
 const { addService, getServices, removeService, getHomeServices, viewSingleService, getAdminAllServices } = require('../controllers/serviceController')
 const adminJwtMiddleware = require('../middlewares/jwtAdminMiddleware')
 
-const { addJob, getAllJobs, removeJob, getAllUserJobs } = require('../controllers/jobController')
+const { addJob, getAllJobs, removeJob } = require('../controllers/jobController')
 const jwtMiddleware = require('../middlewares/jwtMiddleware')
-const { addApplication, getAllApplication, getAllApplications, adminApproveApplication, adminRejectApplication } = require('../controllers/applicationController')
+const { addApplication, getAllApplication, getAllApplications, adminApproveApplication, adminRejectApplication, getAllUserJobs, removeApplication } = require('../controllers/applicationController')
 const pdfMulterConfig = require('../middlewares/applicationPdfUpload')
 const { addAppointment, getAllAppointments, approveAppointment, rejectAppointment, viewUserAppointments, removeAppointment } = require('../controllers/appointmentController')
 
@@ -20,7 +20,6 @@ router.post('/google-login',googleLoginController)
 
 // ----------user--------------
 router.get('/home-services',getHomeServices)
-router.get('/all/user/jobs',jwtMiddleware,getAllUserJobs)
 router.get('/all-services',getServices)
 router.post('/add-application',jwtMiddleware,pdfMulterConfig.single('resume'),addApplication)
 router.get('/view/:id/service',jwtMiddleware,viewSingleService)
@@ -28,6 +27,9 @@ router.post('/add-appointment',jwtMiddleware,addAppointment)
 router.get('/view/user/appointments',jwtMiddleware,viewUserAppointments)
 router.delete('/remove/:id/appointment',jwtMiddleware,removeAppointment)
 router.put('/edit/user',jwtMiddleware,multerConfig.single('profile'),editUserController)
+router.get('/applied-jobs',jwtMiddleware,getAllUserJobs)
+router.delete('/remove/:id/application',jwtMiddleware,removeApplication)
+
 // ----------admin---------------
 router.post('/add-service',adminJwtMiddleware,multerConfig.single('serviceImg'),addService)
 router.get('/admin-all-services',getAdminAllServices)

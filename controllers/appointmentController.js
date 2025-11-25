@@ -84,6 +84,7 @@ exports.removeAppointment = async (req,res)=>{
 
     try {
         const deleteAppointment = await appointments.findByIdAndDelete({_id:id})
+         res.status(200).json(deleteAppointment) 
     } catch (error) {
        res.status(500).json(error) 
     }
